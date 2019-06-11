@@ -19,8 +19,8 @@ extlinks = {
 redoc = [
     {
         'name': 'XBRL API',
-        'page': 'api/xbrlus/index',
-        'spec': '_specs/xbrlapi.yml',
+        'page': 'v1',
+        'spec': 'https://raw.githubusercontent.com/davidtauriello/xbrl-api2/master/docs/xbrlapi.yaml',
         'opts': {
             'lazy-rendering': True,
 			'native-scrollbars': True,
