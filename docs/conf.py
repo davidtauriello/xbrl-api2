@@ -8,7 +8,7 @@ release = pkg_resources.get_distribution('sphinxcontrib-redoc').version
 version = '.'.join(release.split('.')[:2])
 
 extensions = ['sphinx.ext.extlinks', 'sphinxcontrib.redoc']
-source_suffix = '.html'
+source_suffix = '.rst'
 master_doc = 'index'
 exclude_patterns = ['_build']
 pygments_style = 'sphinx'
@@ -19,7 +19,7 @@ extlinks = {
 redoc = [
     {
         'name': 'XBRL API',
-        'page': 'v1',
+        'page': 'v1/index',
         'spec': 'https://raw.githubusercontent.com/davidtauriello/xbrl-api2/master/docs/xbrlapi.yaml',
         'opts': {
             'lazy-rendering': True,
