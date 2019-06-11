@@ -20,7 +20,7 @@ redoc = [
     {
         'name': 'XBRL API',
         'page': 'v1/index',
-        'spec': 'https://raw.githubusercontent.com/davidtauriello/xbrl-api2/master/docs/xbrlapi.yaml',
+        'spec': '_specs/github.yml',
         'opts': {
             'lazy-rendering': True,
 			'native-scrollbars': True,
