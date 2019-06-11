@@ -1,0 +1,157 @@
+openapi: 3.0.0
+# XBRL US API
+servers:
+  - description: Running this application XBRL US server
+    url: 'https://api.xbrl.us/'
+info:
+  version: "V1"
+  title: XBRL US API
+  description: |
+    This API defines the XBRL US API - V6
+
+  
+  contact:
+    name: xbrl.us
+    email: support@xbrl.us
+tags:
+  - name: oauth2
+    description: Operations to request authorization, receive tokens, and check tokens
+  
+security:
+  - oauth2: [ROLE_CLIENT, ROLE_USER]
+paths:
+  /oauth2/token:
+    summary: Aquire an access token by fulfilling a client_credentials grant, or a password grant
+    post:
+      operationId: tokenUrl
+      tags: [oauth2]
+      security: []
+      description: Assuming a valid login exists, this route allows a trusted client to aquire an access token for itself, or to request an access token for a specific user. You may send both client_credentials grants and password grants via the following. 
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authorization_grant'
+            example:
+              grant_type: password
+              client_id: 1223
+              client_secret: xhOEnAX2M...gaIYLXOvCe25Q
+              username: campbell.pryde@xbrl.us
+              password: someSecurePassword
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/authorization_grant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/authorization_grant'
+      responses:
+        '200':
+          description: > 
+            The authorization grant has been validated, and an access token is granted. [Read more](https://jwt.io/introduction/)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  platform :
+                    type: string
+                    example: pc
+                  access_token:
+                    type: string
+                    format: byte
+                    example: eyJ...124nOvc
+                    
+                  refresh_token:
+                    type: string
+                    format: byte
+                    example: eyJ...124nOvc
+                    
+                  expires_in:
+                    type: integer
+                    example: 3600
+                  refresh_token_expires_in:
+                    type: integer
+                    example: 3600
+                  token_type:
+                    type: string
+                    example: bearer
+                    
+                      
+                  
+        '400':
+          $ref: '#/components/responses/bad_request'
+  
+                                
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: /oauth2/token
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    
+  schemas:
+    authorization_grant:
+      type: object
+      required: [grant_type, client_id, client_secret]
+      properties:
+        grant_type:
+          type: string
+          example: password
+          description: Used to identify which credentials the authorization server needs to check
+              
+        client_id:
+          type: string
+          example: XBRL US
+          description: Unique identifier agreed upon by XBRL US and the 3rd party client
+        client_secret:
+          type: string
+          example: xhOEnAX2M...gaIYLXOvCe25Q
+          format: byte
+          description: Base64 key used to authenticate the 3rd party client
+        username:
+          type: string
+          example: campbell.pryde@xbrl.us
+          description: Unique identifier for a given user
+        password:
+          type: string
+          example: someSecurePassword
+          description: Password used to authenticate the 3rd party user
+        platform:
+          type: string
+          example: pc
+          description: just required
+    error_message:
+      type: object
+      properties:
+        errors:
+          type: string
+          description: Identifier for the error
+        error_description:
+          type: string
+          description: Adds more details to the error
+
+  responses:
+    bad_request:
+      description: Malformed request or missing fields. Check that Content-Type matches the format/encoding, and that all required fields are spelled correctly, have correct types, and valid values. 
+      content:
+        applications/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example:
+            error: bad_request
+            error_description: Missing a field.
+    bad_token:
+      description: The token is invalid, expired, or corrupted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error_message'
+          example:
+            error: unauthorized,
+            error_description: Cannot convert access token to JSON
