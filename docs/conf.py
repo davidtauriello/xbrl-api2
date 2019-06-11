@@ -18,13 +18,11 @@ extlinks = {
 }
 redoc = [
     {
-        'name': 'XBRL API',
-        'page': 'v1/index',
+        'name': 'Github API (v3)',
+        'page': 'api/github/index',
         'spec': '_specs/github.yml',
         'opts': {
-            'lazy-rendering': True,
-			'native-scrollbars': True,
-			'untrusted-spec': True
+            'lazy-rendering': True
         },
     },
 ]
